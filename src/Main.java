@@ -18,7 +18,7 @@ public class Main {
 
         while (!server.isClosed()){
             Socket client=server.accept();
-            executorService.execute(new ServerClientDialog(client,"https://www.olx.ua/dom-i-sad/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free"));
+            executorService.execute(new ServerClientDialog(client));
         }
 
 

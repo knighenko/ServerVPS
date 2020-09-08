@@ -9,14 +9,13 @@ import java.net.Socket;
 
 public class ServerClientDialog implements Runnable {
     private final Socket client;
-    private final String urlSite;
+
     private String response;
 
 
-    public ServerClientDialog(Socket client, String url) {
+    public ServerClientDialog(Socket client) {
         this.client = client;
-        this.urlSite = url;
-    }
+            }
 
     /**
      * This method gets request from clent and sends responce to him
@@ -29,10 +28,10 @@ public class ServerClientDialog implements Runnable {
             System.out.println("Client connected.");
             DataInputStream inputStream = new DataInputStream(client.getInputStream());
             DataOutputStream outputStream = new DataOutputStream(client.getOutputStream());
-            String request = inputStream.readUTF();
-            System.out.println("Read from client message: " + request);
+            String requestUrl = inputStream.readUTF();
+            System.out.println("Read from client message: " + requestUrl);
 
-            outputStream.writeUTF(getResponse());
+            outputStream.writeUTF(getResponse(requestUrl));
 
             outputStream.flush();
             inputStream.close();
@@ -48,8 +47,8 @@ public class ServerClientDialog implements Runnable {
     /**
      * This method return Json string from URL
      */
-    private String getResponse() {
-        SiteReader siteReader = new SiteReader(urlSite);
+    private String getResponse(String Url) {
+        SiteReader siteReader = new SiteReader(Url);
         response = siteReader.getJsonString();
         System.out.println("Response is "+ response);
         return response;
