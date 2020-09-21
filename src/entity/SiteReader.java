@@ -39,13 +39,15 @@ public class SiteReader {
 
                     HtmlImage element = item.getFirstByXPath(".//table/tbody/tr[1]/td[1]/a/img");
                     HtmlAnchor anchor = item.getFirstByXPath(".//table/tbody/tr[1]/td[2]/div/h3/a");
-
+                    HtmlPage advPage=client.getPage(anchor.getHrefAttribute());
+                    HtmlElement advItem=advPage.getHtmlElementById("textContent");
 
                     if (element != null) {
                         Advertisement adv = new Advertisement();
                         adv.setTitle(anchor.getTextContent().trim());
                         adv.setUrl(anchor.getHrefAttribute());
                         adv.setImageSrc(element.getSrcAttribute());
+                        adv.setDescription(advItem.getTextContent().trim());
                         mapper.writeValue(writer, adv);
 
 
@@ -54,6 +56,7 @@ public class SiteReader {
                         adv.setTitle(anchor.getTextContent().trim());
                         adv.setUrl(anchor.getHrefAttribute());
                         adv.setImageSrc("No Img");
+                        adv.setDescription(advItem.getTextContent().trim());
                         mapper.writeValue(writer, adv);
 
                     }
