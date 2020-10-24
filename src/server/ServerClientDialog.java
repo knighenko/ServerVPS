@@ -6,6 +6,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ServerClientDialog implements Runnable {
     private final Socket client;
@@ -25,11 +28,12 @@ public class ServerClientDialog implements Runnable {
 
 
         try {
-            System.out.println("Client connected.");
+
+            System.out.println("Client connected. Time is:" + Calendar.getInstance().getTime());
             DataInputStream inputStream = new DataInputStream(client.getInputStream());
             DataOutputStream outputStream = new DataOutputStream(client.getOutputStream());
             String requestUrl = inputStream.readUTF();
-            System.out.println("Read from client message: " + requestUrl);
+           // System.out.println("Read from client message: " + requestUrl);
 
             outputStream.writeUTF(getResponse(requestUrl));
 
@@ -37,7 +41,7 @@ public class ServerClientDialog implements Runnable {
             inputStream.close();
             outputStream.close();
             client.close();
-            System.out.println("Closing operation! Client was disconnected!");
+            System.out.println("Closing operation! Client was disconnected! Time is: "+  Calendar.getInstance().getTime());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +54,7 @@ public class ServerClientDialog implements Runnable {
     private String getResponse(String Url) {
         SiteReader siteReader = new SiteReader(Url);
         response = siteReader.getJsonString();
-        System.out.println("Response is "+ response);
+      //  System.out.println("Response is "+ response);
         return response;
     }
 }

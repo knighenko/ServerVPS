@@ -7,6 +7,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import entity.Advertisement;
+import org.w3c.dom.html.HTMLElement;
 
 import java.io.StringWriter;
 import java.util.List;
@@ -34,7 +35,9 @@ public class SiteReader {
                 ObjectMapper mapper = new ObjectMapper();
                 StringWriter writer = new StringWriter();
 
-                for (HtmlElement item : items) {
+               // for (HtmlElement item : items) {
+                for (int i=0; i<items.size()&i<3;i++){
+                    HtmlElement item=items.get(i);
                     // System.out.println(item.asXml());
 
                     HtmlImage element = item.getFirstByXPath(".//table/tbody/tr[1]/td[1]/a/img");
@@ -64,7 +67,7 @@ public class SiteReader {
 
                 }
                 jsonString=writer.toString();
-
+                
 
             }
         } catch (Exception e) {
