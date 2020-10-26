@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SiteReader {
     private final String url;
-
+    private int length;
 
     private String jsonString;
 
@@ -22,7 +22,13 @@ public class SiteReader {
      * Конструктор класса с инициализацией и ЮРЛ и обьекта в виде строки Json
      */
     public SiteReader(String url) {
-        this.url = url;
+        if (Integer.parseInt(url.substring(url.length() - 1)) == 1) {
+            this.url = url.substring(0, url.length() - 1);
+            length = 30;
+        } else {
+            this.url = url;
+            length = 3;
+        } ;
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
@@ -35,15 +41,15 @@ public class SiteReader {
                 ObjectMapper mapper = new ObjectMapper();
                 StringWriter writer = new StringWriter();
 
-               // for (HtmlElement item : items) {
-                for (int i=0; i<items.size()&i<3;i++){
-                    HtmlElement item=items.get(i);
+                // for (HtmlElement item : items) {
+                for (int i = 0; i < items.size() & i < length; i++) {
+                    HtmlElement item = items.get(i);
                     // System.out.println(item.asXml());
 
                     HtmlImage element = item.getFirstByXPath(".//table/tbody/tr[1]/td[1]/a/img");
                     HtmlAnchor anchor = item.getFirstByXPath(".//table/tbody/tr[1]/td[2]/div/h3/a");
-                    HtmlPage advPage=client.getPage(anchor.getHrefAttribute());
-                    HtmlElement advItem=advPage.getHtmlElementById("textContent");
+                    HtmlPage advPage = client.getPage(anchor.getHrefAttribute());
+                    HtmlElement advItem = advPage.getHtmlElementById("textContent");
 
                     if (element != null) {
                         Advertisement adv = new Advertisement();
@@ -66,8 +72,8 @@ public class SiteReader {
 
 
                 }
-                jsonString=writer.toString();
-                
+                jsonString = writer.toString();
+
 
             }
         } catch (Exception e) {
