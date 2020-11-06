@@ -6,14 +6,12 @@ import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import entity.Advertisement;
-import org.w3c.dom.html.HTMLElement;
 
 import java.io.StringWriter;
 import java.util.List;
 
 public class SiteReader {
-    private final String url;
+    private final String newUrl;
     private int length;
 
     private String jsonString;
@@ -23,17 +21,17 @@ public class SiteReader {
      */
     public SiteReader(String url) {
         if (Integer.parseInt(url.substring(url.length() - 1)) == 1) {
-            this.url = url.substring(0, url.length() - 1);
+            this.newUrl = url.substring(0, url.length() - 1);
             length = 30;
         } else {
-            this.url = url;
+            this.newUrl = url;
             length = 3;
         } ;
         WebClient client = new WebClient();
         client.getOptions().setCssEnabled(false);
         client.getOptions().setJavaScriptEnabled(false);
         try {
-            HtmlPage page = client.getPage(url);
+            HtmlPage page = client.getPage(newUrl);
             List<HtmlElement> items = page.getByXPath("//div[@class='offer-wrapper']");
             if (items.isEmpty()) {
                 System.out.println("No items found!");
